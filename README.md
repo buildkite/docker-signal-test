@@ -152,7 +152,7 @@ Exiting...
 
 :thumbsdown:
 
-## Test 4: `docker-compose run -T` with `kill`
+## Test 5: `docker-compose run -T` with `kill`
 
 Shell 1:
 
@@ -207,6 +207,6 @@ Exiting...
 
 ## In Summary
 
-With `docker run` you can only send signals to the docker process, and have them passed to the inner process, if the container is running in non-tty mode (`-T` with `docker-compose run`, or without the `-t` for `docker run`). If you run in tty mode you need to send signals using `docker kill -s SIGNAME`.
+With `docker run` you can only send signals to the docker process (and have them passed to the inner process) if the container is running in non-tty mode (`-T` with `docker-compose run`, or without the `-t` for `docker run`). If you run in tty mode you need to send signals using `docker kill -s SIGNAME`.
 
-With `docker-compose` doesn't seem to proxy signals whether started with or without the `-T` option. Also when it does receive a signal it reports the run as `Terminated` in it's output but still leaves the Docker container running, even though `docker-compose` is no longer in the process list. The only way to kill the running container is to run `docker kill`.
+With `docker-compose` you can't send any process signals to it directly, as it doesn't proxy them (whether started `-T` or not). Also when it does receive a TERM signal it echoes `Terminated` and terminates, but it fails to shut down the running Docker container. The only way to kill the running container is to run `docker kill`.
